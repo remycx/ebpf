@@ -8,17 +8,33 @@ import (
 )
 
 type Config struct {
-	Server ServerConfig `yaml:"server"`
-	Storage StorageConfig `yaml:"storage"`
+	Server   ServerConfig   `yaml:"server"`
+	Storage  StorageConfig  `yaml:"storage"`
+	Security SecurityConfig `yaml:"security"`
 }
 
 type ServerConfig struct {
-	Listen string `yaml:"listen"`
+	Listen   string     `yaml:"listen"`
+	TLS      TLSConfig  `yaml:"tls"`
+}
+
+type TLSConfig struct {
+	Enabled  bool   `yaml:"enabled"`
+	CertFile string `yaml:"cert_file"`
+	KeyFile  string `yaml:"key_file"`
 }
 
 type StorageConfig struct {
 	Type           string `yaml:"type"`
 	RetentionHours int    `yaml:"retention_hours"`
+}
+
+type SecurityConfig struct {
+	RequireAuth     bool    `yaml:"require_auth"`
+	APIKeysFile     string  `yaml:"api_keys_file"`
+	RateLimit       float64 `yaml:"rate_limit"`       // requests per second
+	RateLimitBurst  int     `yaml:"rate_limit_burst"` // burst size
+	TrustedProxies  []string `yaml:"trusted_proxies"`
 }
 
 func Load(filename string) (*Config, error) {
@@ -49,6 +65,18 @@ func Load(filename string) (*Config, error) {
 		cfg.Storage.RetentionHours = 24
 	}
 
+	if cfg.Security.RateLimit == 0 {
+		cfg.Security.RateLimit = 10.0 // 10 requests per second
+	}
+
+	if cfg.Security.RateLimitBurst == 0 {
+		cfg.Security.RateLimitBurst = 20
+	}
+
+	if cfg.Security.APIKeysFile == "" {
+		cfg.Security.APIKeysFile = "api-keys.yaml"
+	}
+
 	return &cfg, nil
 }
 
@@ -60,6 +88,12 @@ func defaultConfig() *Config {
 		Storage: StorageConfig{
 			Type:           "memory",
 			RetentionHours: 24,
+		},
+		Security: SecurityConfig{
+			RequireAuth:    false,
+			APIKeysFile:    "api-keys.yaml",
+			RateLimit:      10.0,
+			RateLimitBurst: 20,
 		},
 	}
 }

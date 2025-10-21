@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"sync"
 	"time"
+
+	"github.com/sentinel/backend/pkg/validation"
 )
 
 type Event struct {
@@ -71,6 +73,11 @@ type Store struct {
 }
 
 func (s *Store) AddEvents(data []byte) error {
+	// Validate input data
+	if err := validation.ValidateEventData(data); err != nil {
+		return err
+	}
+
 	var batch struct {
 		Events    []json.RawMessage `json:"events"`
 		Timestamp int64             `json:"timestamp"`

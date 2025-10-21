@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"log"
+	"net/http"
 	"net/url"
 	"sync"
 	"time"
@@ -45,7 +46,13 @@ func (s *Sender) connect() error {
 		dialer.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 
-	conn, _, err := dialer.Dial(u.String(), nil)
+	// Add authentication header if API key is provided
+	headers := make(http.Header)
+	if s.config.APIKey != "" {
+		headers.Add("Authorization", "Bearer "+s.config.APIKey)
+	}
+
+	conn, _, err := dialer.Dial(u.String(), headers)
 	if err != nil {
 		return fmt.Errorf("failed to connect to server: %w", err)
 	}

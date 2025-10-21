@@ -19,6 +19,7 @@ type AgentConfig struct {
 
 type ServerConfig struct {
 	URL             string `yaml:"url"`
+	APIKey          string `yaml:"api_key"`
 	ReconnectDelay  int    `yaml:"reconnect_delay"`
 	MaxRetries      int    `yaml:"max_retries"`
 	InsecureSkipTLS bool   `yaml:"insecure_skip_tls"`

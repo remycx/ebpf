@@ -2,9 +2,33 @@ server:
   # Listen address for the server
   listen: ":8080"
 
+  # TLS configuration
+  tls:
+    enabled: false
+    cert_file: "/etc/sentinel/certs/server.crt"
+    key_file: "/etc/sentinel/certs/server.key"
+
 storage:
   # Storage type: memory, postgres, timescaledb
   type: memory
 
   # Data retention in hours
   retention_hours: 24
+
+security:
+  # Require API key authentication for agents
+  require_auth: false  # Set to true in production!
+
+  # API keys file path
+  api_keys_file: "api-keys.yaml"
+
+  # Rate limiting (requests per second)
+  rate_limit: 10.0
+
+  # Rate limit burst size
+  rate_limit_burst: 20
+
+  # Trusted proxy IPs (for X-Real-IP header)
+  trusted_proxies:
+    - "127.0.0.1"
+    - "::1"
