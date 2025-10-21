@@ -1,0 +1,22 @@
+agent:
+  # Hostname to identify this agent (auto-detected if empty)
+  hostname: ""
+
+  # Custom tags for this agent
+  tags:
+    environment: production
+    datacenter: us-east-1
+    role: webserver
+
+server:
+  # Sentinel server WebSocket endpoint
+  url: "ws://localhost:8080/api/v1/events"
+
+  # Reconnect delay in seconds
+  reconnect_delay: 5
+
+  # Max retries (-1 for infinite)
+  max_retries: -1
+
+  # Skip TLS verification (for development only)
+  insecure_skip_tls: false

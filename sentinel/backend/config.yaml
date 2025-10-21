@@ -1,0 +1,10 @@
+server:
+  # Listen address for the server
+  listen: ":8080"
+
+storage:
+  # Storage type: memory, postgres, timescaledb
+  type: memory
+
+  # Data retention in hours
+  retention_hours: 24

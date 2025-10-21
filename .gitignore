@@ -1,0 +1,47 @@
+# Build artifacts
+agent/build/
+sentinel/backend/build/
+sentinel/frontend/build/
+
+# eBPF compiled objects
+*.bpf.o
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Config overrides
+config.local.yaml
+agent.local.yaml
